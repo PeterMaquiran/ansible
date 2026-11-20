@@ -2,6 +2,8 @@
 - name: Smoke test — control node reachability to all managed hosts
   hosts: managed
   gather_facts: false
+  vars:
+    controller_name: "{{ lookup('env', 'ANSIBLE_CONTROLLER_NAME') | default('local', true) }}"
   tasks:
     - name: Ping all nodes from the controller
       ansible.builtin.ping:

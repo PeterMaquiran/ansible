@@ -52,11 +52,12 @@ services:
     build:
       context: docker/ansible-control
     hostname: ansible-control
-    working_dir: /workspace
+    working_dir: /workspace/ansible
     env_file:
       - .env
     environment:
       ANSIBLE_CONFIG: /workspace/ansible/ansible.cfg
+      ANSIBLE_COLLECTIONS_PATH: /workspace/ansible/collections
       ANSIBLE_PRIVATE_KEY_FILE: ${ANSIBLE_PRIVATE_KEY_CONTAINER_PATH}
       ANSIBLE_PRIVATE_KEY_HOST_PATH: ${ANSIBLE_PRIVATE_KEY_CONTAINER_PATH}
       WEB01_SSH_HOST: web01
@@ -65,6 +66,8 @@ services:
       WEB02_SSH_PORT: "22"
     volumes:
       - ./:/workspace:ro
+      # Galaxy writes under collections/ — keep repo RO but allow this path
+      - ./ansible/collections:/workspace/ansible/collections:rw
       - ./ssh/ansible_control_ed25519:/run/ansible/ssh_key:ro
     networks:
       - lab

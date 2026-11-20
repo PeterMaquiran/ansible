@@ -6,6 +6,12 @@
     update_cache: true
     cache_valid_time: 3600
 
+- name: Install tzdata (required before community.general.timezone on minimal images)
+  ansible.builtin.apt:
+    name: tzdata
+    state: present
+  when: timezone is defined
+
 - name: Set timezone
   community.general.timezone:
     name: "{{ timezone }}"

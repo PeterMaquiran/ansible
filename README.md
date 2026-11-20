@@ -24,7 +24,7 @@ Production patterns included:
 | Pattern | Location |
 |--------|----------|
 | Static inventory with groups | `ansible/inventory/hosts.yml` |
-| `group_vars` / `host_vars` | `ansible/group_vars`, `ansible/host_vars` |
+| `group_vars` / `host_vars` | `ansible/inventory/group_vars`, `ansible/inventory/host_vars` |
 | Entry playbook `site.yml` + roles | `ansible/playbooks/site.yml`, `ansible/roles/` |
 | Rolling updates (`serial: 1`) | `ansible/playbooks/site.yml` |
 | Collections pin | `ansible/collections/requirements.yml` |
@@ -94,5 +94,5 @@ All connection and identity settings are in [`.env`](.env). Inventory reads host
 
 1. Copy a service block in `docker-compose.yml` → `web03`, new port in `.env`.
 2. Add `web03` under `webservers` in `ansible/inventory/hosts.yml`.
-3. Add `ansible/host_vars/web03.yml`.
+3. Add `ansible/inventory/host_vars/web03.yml`.
 4. `make up && make site` — the same control node configures the new host.

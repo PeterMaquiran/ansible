@@ -1,3 +1,8 @@
 ---
-timezone: UTC
-common_packages: []
+timezone: Etc/UTC
+common_packages:
+  - curl
+  - htop
+  - vim-tiny
+  - acl
+  - tzdata

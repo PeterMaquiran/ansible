@@ -33,18 +33,22 @@ logs:
 	$(with_env); docker compose --env-file "$(ENV_FILE)" logs -f web01 web02
 
 galaxy:
-	$(with_env); cd "$(ANSIBLE_DIR)" && ansible-galaxy collection install -r collections/requirements.yml -p collections
+	$(with_env); export ANSIBLE_COLLECTIONS_PATH="$(ANSIBLE_DIR)/collections"; \
+	cd "$(ANSIBLE_DIR)" && ansible-galaxy collection install -r collections/requirements.yml -p collections
 
 smoke: galaxy
-	$(with_env); export ANSIBLE_PRIVATE_KEY_FILE="$(ROOT)/$${ANSIBLE_PRIVATE_KEY_HOST_PATH#./}"; \
+	$(with_env); export ANSIBLE_PRIVATE_KEY_HOST_PATH="$(ROOT)/$${ANSIBLE_PRIVATE_KEY_HOST_PATH#./}"; \
+	export ANSIBLE_PRIVATE_KEY_FILE="$$ANSIBLE_PRIVATE_KEY_HOST_PATH"; \
 	cd "$(ANSIBLE_DIR)" && ansible-playbook playbooks/smoke.yml
 
 site: galaxy
-	$(with_env); export ANSIBLE_PRIVATE_KEY_FILE="$(ROOT)/$${ANSIBLE_PRIVATE_KEY_HOST_PATH#./}"; \
+	$(with_env); export ANSIBLE_PRIVATE_KEY_HOST_PATH="$(ROOT)/$${ANSIBLE_PRIVATE_KEY_HOST_PATH#./}"; \
+	export ANSIBLE_PRIVATE_KEY_FILE="$$ANSIBLE_PRIVATE_KEY_HOST_PATH"; \
 	cd "$(ANSIBLE_DIR)" && ansible-playbook playbooks/site.yml
 
 ping: galaxy
-	$(with_env); export ANSIBLE_PRIVATE_KEY_FILE="$(ROOT)/$${ANSIBLE_PRIVATE_KEY_HOST_PATH#./}"; \
+	$(with_env); export ANSIBLE_PRIVATE_KEY_HOST_PATH="$(ROOT)/$${ANSIBLE_PRIVATE_KEY_HOST_PATH#./}"; \
+	export ANSIBLE_PRIVATE_KEY_FILE="$$ANSIBLE_PRIVATE_KEY_HOST_PATH"; \
 	cd "$(ANSIBLE_DIR)" && ansible managed -m ping
 
 ssh-web01:
