@@ -1,0 +1,4 @@
+Managed by Ansible controller: {{ controller_name }}
+Environment: {{ lab_environment | default('lab') }}
+Application: {{ app_name | default('ansible-playground') }}
+Host: {{ inventory_hostname }} ({{ node_id | default(inventory_hostname) }})

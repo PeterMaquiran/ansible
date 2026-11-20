@@ -1,0 +1,4 @@
+ansible/collections/ansible_collections/
+**/__pycache__/
+*.retry
+.DS_Store

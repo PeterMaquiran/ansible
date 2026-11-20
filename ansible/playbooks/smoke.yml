@@ -1,0 +1,13 @@
+---
+- name: Smoke test — control node reachability to all managed hosts
+  hosts: managed
+  gather_facts: false
+  tasks:
+    - name: Ping all nodes from the controller
+      ansible.builtin.ping:
+
+    - name: Show connection facts (proves one run, many targets)
+      ansible.builtin.debug:
+        msg: >-
+          Controller '{{ controller_name }}' reached {{ inventory_hostname }}
+          at {{ hostvars[inventory_hostname].ansible_host }}:{{ hostvars[inventory_hostname].ansible_port | default(22) }}

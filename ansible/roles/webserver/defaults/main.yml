@@ -1,0 +1,5 @@
+---
+nginx_package: nginx
+web_listen_port: 8080
+app_document_root: /var/www/playground
+server_name: "{{ inventory_hostname }}"

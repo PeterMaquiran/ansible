@@ -1,0 +1,9 @@
+---
+# Global baseline — applied to every host the control node touches
+timezone: UTC
+common_packages:
+  - curl
+  - htop
+  - vim-tiny
+  - acl
+controller_name: "{{ lookup('env', 'ANSIBLE_CONTROLLER_NAME') | default('local', true) }}"

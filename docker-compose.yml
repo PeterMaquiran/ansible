@@ -1,0 +1,81 @@
+name: ansible-playground
+
+services:
+  web01:
+    build:
+      context: docker/ubuntu-sshd
+      args:
+        UBUNTU_VERSION: ${UBUNTU_VERSION}
+        ANSIBLE_USER: ${ANSIBLE_SSH_USER}
+        ANSIBLE_PASSWORD: ${ANSIBLE_SSH_PASSWORD}
+    hostname: web01
+    environment:
+      ANSIBLE_USER: ${ANSIBLE_SSH_USER}
+      AUTHORIZED_KEYS: ${ANSIBLE_AUTHORIZED_KEY}
+    ports:
+      - "${WEB01_SSH_PORT}:22"
+      - "${WEB01_HTTP_PORT}:8080"
+    networks:
+      - lab
+    healthcheck:
+      test: ["CMD-SHELL", "ss -lnt | grep -q ':22 '"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 5s
+
+  web02:
+    build:
+      context: docker/ubuntu-sshd
+      args:
+        UBUNTU_VERSION: ${UBUNTU_VERSION}
+        ANSIBLE_USER: ${ANSIBLE_SSH_USER}
+        ANSIBLE_PASSWORD: ${ANSIBLE_SSH_PASSWORD}
+    hostname: web02
+    environment:
+      ANSIBLE_USER: ${ANSIBLE_SSH_USER}
+      AUTHORIZED_KEYS: ${ANSIBLE_AUTHORIZED_KEY}
+    ports:
+      - "${WEB02_SSH_PORT}:22"
+      - "${WEB02_HTTP_PORT}:8080"
+    networks:
+      - lab
+    healthcheck:
+      test: ["CMD-SHELL", "ss -lnt | grep -q ':22 '"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 5s
+
+  # Single control node manages every target in the inventory (production pattern).
+  control:
+    build:
+      context: docker/ansible-control
+    hostname: ansible-control
+    working_dir: /workspace
+    env_file:
+      - .env
+    environment:
+      ANSIBLE_CONFIG: /workspace/ansible/ansible.cfg
+      ANSIBLE_PRIVATE_KEY_FILE: ${ANSIBLE_PRIVATE_KEY_CONTAINER_PATH}
+      ANSIBLE_PRIVATE_KEY_HOST_PATH: ${ANSIBLE_PRIVATE_KEY_CONTAINER_PATH}
+      WEB01_SSH_HOST: web01
+      WEB01_SSH_PORT: "22"
+      WEB02_SSH_HOST: web02
+      WEB02_SSH_PORT: "22"
+    volumes:
+      - ./:/workspace:ro
+      - ./ssh/ansible_control_ed25519:/run/ansible/ssh_key:ro
+    networks:
+      - lab
+    depends_on:
+      web01:
+        condition: service_healthy
+      web02:
+        condition: service_healthy
+    profiles:
+      - control
+
+networks:
+  lab:
+    driver: bridge

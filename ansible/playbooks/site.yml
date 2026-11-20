@@ -1,0 +1,15 @@
+---
+- name: Baseline for every managed host
+  hosts: managed
+  become: true
+  roles:
+    - role: common
+      tags: [common, baseline]
+
+- name: Web tier — same playbook, multiple nodes
+  hosts: webservers
+  become: true
+  serial: 1
+  roles:
+    - role: webserver
+      tags: [webserver, app]

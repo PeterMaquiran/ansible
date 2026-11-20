@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>{{ app_name | default('ansible-playground') }}</title>
+</head>
+<body>
+  <h1>{{ inventory_hostname }}</h1>
+  <p>Configured by a single Ansible control node ({{ controller_name }}).</p>
+  <p>Environment: {{ lab_environment }}</p>
+</body>
+</html>
