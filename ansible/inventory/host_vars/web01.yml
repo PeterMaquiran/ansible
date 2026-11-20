@@ -1,3 +1,4 @@
 ---
 node_id: web01
-server_name: playground-web01.local
+# Host-specific nginx name — web02 stays playground-web02.local
+server_name: my-web01.lab.local
