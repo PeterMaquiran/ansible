@@ -24,13 +24,13 @@ That gap is normal. Close it in layers below.
 
 **Goal:** Confidence on the machine before adding tools.
 
-- [ ] `make up` → `make smoke` → `make site` without reading the README
-- [ ] Run `make site` **twice**; understand mostly `ok` vs `changed` (idempotency)
-- [ ] Change `host_vars/web01.yml` → `make site` → see the difference on :8081
-- [ ] Add a package in `group_vars/all.yml` → verify with `make ssh-web01`
-- [ ] Add **web03**: `docker-compose.yml`, `.env`, inventory, `host_vars` (README has steps)
-- [ ] Break something on purpose (wrong port in `.env`), read the error, fix it
-- [ ] Run from `ansible/` with `--limit web02` and `--tags webserver` (see ANSIBLE-FUNDAMENTALS §13)
+- [x] `make up` → `make smoke` → `make site` without reading the README
+- [x] Run `make site` **twice**; understand mostly `ok` vs `changed` (idempotency)
+- [x] Change `host_vars/web01.yml` → `make site` → see the difference on :8081
+- [x] Add a package in `group_vars/all.yml` → verify with `make ssh-web01`
+- [x] Add **web03**: `docker-compose.yml`, `.env`, inventory, `host_vars` (README has steps)
+- [x] Break something on purpose (wrong port in `.env`), read the error, fix it
+- [x] Run from `ansible/` with `--limit web02` and `--tags webserver` (see ANSIBLE-FUNDAMENTALS §13)
 
 **Done when:** You can add a node and explain control node vs managed node to someone else.
 
@@ -42,16 +42,16 @@ That gap is normal. Close it in layers below.
 
 ### 2.1 Secrets — Ansible Vault
 
-- [ ] Learn: [vault-encrypted variables](https://docs.ansible.com/ansible/latest/vault_guide/index.html)
+- [x] Learn: [vault-encrypted variables](https://docs.ansible.com/ansible/latest/vault_guide/index.html)
 - [ ] Move at least one sensitive value out of plain `.env` / YAML (e.g. practice password) into `group_vars/all/vault.yml` (encrypted)
 - [ ] Run playbooks with `ansible-playbook --ask-vault-pass` or a vault password file **outside** git
 - [ ] Rule for real life: **no private keys or prod passwords in git**, even in a “practice” repo you might push
 
 ### 2.2 Safety flags
 
-- [ ] `ansible-playbook playbooks/site.yml --check` (dry run)
-- [ ] Same command with `--diff` (show file changes)
-- [ ] `ansible-playbook ... --limit web01` before touching the whole group
+- [x] `ansible-playbook playbooks/site.yml --check` (dry run)
+- [x] Same command with `--diff` (show file changes)
+- [x] `ansible-playbook ... --limit web01` before touching the whole group
 
 ### 2.3 Lint
 
@@ -127,10 +127,10 @@ Use this when you interview or join a team—not as day-one homework.
 
 When you are ready, we can add to the playground (pick any):
 
-1. `ansible/group_vars/all/vault.yml.example` + docs for Vault workflow  
-2. `make lint` (`ansible-lint`, `yamllint`)  
-3. `inventories/lab/` and `inventories/staging/` layout  
-4. Molecule scenario for `roles/common`  
+1. `ansible/group_vars/all/vault.yml.example` + docs for Vault workflow
+2. `make lint` (`ansible-lint`, `yamllint`)
+3. `inventories/lab/` and `inventories/staging/` layout
+4. Molecule scenario for `roles/common`
 
 Track your progress by checking boxes in this file in git.
 
